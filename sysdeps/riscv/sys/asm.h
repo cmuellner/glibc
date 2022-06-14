@@ -46,13 +46,17 @@
 # endif
 #endif
 
-/* Declare leaf routine.  */
-#define	LEAF(symbol)				\
-		.globl	symbol;			\
-		.align	2;			\
-		.type	symbol,@function;	\
+/* Define an entry point visible from C with custom p2-alignment.  */
+#define	ENTRY_ALIGN(symbol, align)		\
+		.globl symbol;			\
+		.p2align align;			\
+		.type symbol,@function;		\
 		C_LABEL(symbol)			\
 		cfi_startproc;
+
+/* Declare leaf routine.  */
+#define	LEAF(symbol)				\
+	ENTRY_ALIGN (symbol, 1)
 
 /* Mark end of function.  */
 #undef END
