@@ -19,8 +19,35 @@
 #ifndef _CPU_FEATURES_RISCV_H
 #define _CPU_FEATURES_RISCV_H
 
+#define IS_RV32() \
+	(GLRO (dl_riscv_hart_features).xlen == 32)
+
+#define IS_RV64() \
+	(GLRO (dl_riscv_hart_features).xlen == 64)
+
+#define HAVE_RV(E) \
+	(GLRO (dl_riscv_hart_features).have_ ## E == 1)
+
+#define HAVE_CBOM_BLOCKSIZE(n)	\
+	(GLRO (dl_riscv_hart_features).cbom_blocksize == n)
+
+#define HAVE_CBOZ_BLOCKSIZE(n)	\
+	(GLRO (dl_riscv_hart_features).cboz_blocksize == n)
+
 struct hart_features
 {
+  const char* rt_march;
+  unsigned xlen;
+#define ISA_EXT(e)			\
+  unsigned have_##e:1;
+#define ISA_EXT_GROUP(g, ...)		\
+  unsigned have_##g:1;
+#include "isa-extensions.def"
+
+  const char* rt_cbom_blocksize;
+  unsigned cbom_blocksize;
+  const char* rt_cboz_blocksize;
+  unsigned cboz_blocksize;
 };
 
 #endif /* _CPU_FEATURES_RISCV_H  */

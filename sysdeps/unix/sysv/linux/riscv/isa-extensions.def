@@ -1,0 +1,72 @@
+/* ISA extensions of RISC-V.
+   Copyright (C) 2022 Free Software Foundation, Inc.
+   This file is part of the GNU C Library.
+
+   The GNU C Library is free software; you can redistribute it and/or
+   modify it under the terms of the GNU Lesser General Public
+   License as published by the Free Software Foundation; either
+   version 2.1 of the License, or (at your option) any later version.
+
+   The GNU C Library is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   Lesser General Public License for more details.
+
+   You should have received a copy of the GNU Lesser General Public
+   License along with the GNU C Library; if not, see
+   <https://www.gnu.org/licenses/>.  */
+
+/* Define RISC-V ISA extension.  */
+#ifndef ISA_EXT
+# define ISA_EXT(e)
+#endif
+
+/* Define RISC-V ISA extension group.  */
+#ifndef ISA_EXT_GROUP
+# define ISA_EXT_GROUP(...)
+#endif
+
+/*
+ * Here are the ordering rules of extension naming defined by RISC-V
+ * specification :
+ * 1. All extensions should be separated from other multi-letter extensions
+ *    by an underscore.
+ * 2. The first letter following the 'Z' conventionally indicates the most
+ *    closely related alphabetical extension category, IMAFDQLCBKJTPVH.
+ *    If multiple 'Z' extensions are named, they should be ordered first
+ *    by category, then alphabetically within a category.
+ * 3. Standard supervisor-level extensions (starts with 'S') should be
+ *    listed after standard unprivileged extensions.  If multiple
+ *    supervisor-level extensions are listed, they should be ordered
+ *    alphabetically.
+ * 4. Non-standard extensions (starts with 'X') must be listed after all
+ *    standard extensions. They must be separated from other multi-letter
+ *    extensions by an underscore.
+ */
+
+ISA_EXT (i)
+ISA_EXT (e)
+
+ISA_EXT (m)
+ISA_EXT (a)
+ISA_EXT (f)
+ISA_EXT (d)
+ISA_EXT (c)
+ISA_EXT (zicsr)
+ISA_EXT (zifencei)
+ISA_EXT_GROUP (g, i, m, a, f, d, zicsr, zifencei)
+
+ISA_EXT (zicbom)
+ISA_EXT (zicbop)
+ISA_EXT (zicboz)
+ISA_EXT (zihintpause)
+
+ISA_EXT (zawrs)
+
+ISA_EXT (zba)
+ISA_EXT (zbb)
+ISA_EXT (zbc)
+ISA_EXT (zbs)
+
+#undef ISA_EXT
+#undef ISA_EXT_GROUP
