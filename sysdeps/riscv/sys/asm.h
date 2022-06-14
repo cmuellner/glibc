@@ -51,7 +51,7 @@
 		.globl	symbol;			\
 		.align	2;			\
 		.type	symbol,@function;	\
-symbol:						\
+		C_LABEL(symbol)			\
 		cfi_startproc;
 
 /* Mark end of function.  */
