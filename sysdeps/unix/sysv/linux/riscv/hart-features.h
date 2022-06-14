@@ -34,6 +34,9 @@
 #define HAVE_CBOZ_BLOCKSIZE(n)	\
 	(GLRO (dl_riscv_hart_features).cboz_blocksize == n)
 
+#define HAVE_FAST_UNALIGNED() \
+	(GLRO (dl_riscv_hart_features).fast_unaligned != 0)
+
 struct hart_features
 {
   const char* rt_march;
@@ -48,6 +51,8 @@ struct hart_features
   unsigned cbom_blocksize;
   const char* rt_cboz_blocksize;
   unsigned cboz_blocksize;
+  const char* rt_fast_unaligned;
+  unsigned fast_unaligned;
 };
 
 #endif /* _CPU_FEATURES_RISCV_H  */

@@ -326,6 +326,22 @@ parse_rt_cboz_blocksize (struct hart_features *hart_features)
   hart_features->cboz_blocksize = v;
 }
 
+/* Parse RISCV_RT_FAST_UNALIGNED and store value.  */
+static inline void
+parse_rt_fast_unaligned (struct hart_features *hart_features)
+{
+  hart_features->rt_fast_unaligned = NULL;
+  hart_features->fast_unaligned = 0;
+
+  const char *s = simple_getenv ("RISCV_RT_FAST_UNALIGNED");
+  if (s == NULL)
+    return;
+
+  uint64_t v = _dl_strtoul (s, NULL);
+  hart_features->rt_fast_unaligned = s;
+  hart_features->fast_unaligned = v;
+}
+
 /* Discover hart features and store them.  */
 static inline void
 init_hart_features (struct hart_features *hart_features)
@@ -334,4 +350,7 @@ init_hart_features (struct hart_features *hart_features)
   parse_rt_march (hart_features);
   parse_rt_cbom_blocksize (hart_features);
   parse_rt_cboz_blocksize (hart_features);
+
+  /* Parse tuning properties.  */
+  parse_rt_fast_unaligned (hart_features);
 }
