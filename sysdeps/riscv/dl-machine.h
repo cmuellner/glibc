@@ -28,6 +28,7 @@
 #include <dl-irel.h>
 #include <dl-static-tls.h>
 #include <dl-machine-rel.h>
+#include <hart-features.c>
 
 #ifndef _RTLD_PROLOGUE
 # define _RTLD_PROLOGUE(entry)						\
@@ -146,6 +147,18 @@ elf_machine_fixup_plt (struct link_map *map, lookup_t t,
 		       ElfW(Addr) *reloc_addr, ElfW(Addr) value)
 {
   return *reloc_addr = value;
+}
+
+#define DL_PLATFORM_INIT dl_platform_init ()
+
+static inline void __attribute__ ((unused))
+dl_platform_init (void)
+{
+#ifdef SHARED
+  /* init_hart_features has been called early from __libc_start_main in
+     static executable.  */
+  init_hart_features (&GLRO(dl_riscv_hart_features));
+#endif /* SHARED */
 }
 
 #endif /* !dl_machine_h */
