@@ -55,6 +55,7 @@ __libc_ifunc_impl_list (const char *name, struct libc_ifunc_impl *array,
 	      IFUNC_IMPL_ADD (array, i, memset, 1, __memset_generic))
 
   IFUNC_IMPL (i, name, strlen,
+	      IFUNC_IMPL_ADD (array, i, strlen, 1, __strlen_zbb)
 	      IFUNC_IMPL_ADD (array, i, strlen, 1, __strlen_generic))
 
 

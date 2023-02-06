@@ -30,8 +30,12 @@
 
 extern __typeof (__redirect_strlen) __libc_strlen;
 extern __typeof (__redirect_strlen) __strlen_generic attribute_hidden;
+extern __typeof (__redirect_strlen) __strlen_zbb attribute_hidden;
 
-libc_ifunc (__libc_strlen, __strlen_generic);
+libc_ifunc (__libc_strlen,
+	    HAVE_RV(zbb)
+	     ? __strlen_zbb
+	     : __strlen_generic);
 
 # undef strlen
 strong_alias (__libc_strlen, strlen);
