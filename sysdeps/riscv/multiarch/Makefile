@@ -17,3 +17,8 @@ sysdep_routines += \
 	strncmp_generic \
 	strncmp_zbb
 endif
+
+# nscd uses atomic_spin_nop which in turn requires cpu_relax
+ifeq ($(subdir),nscd)
+routines += cpu_relax cpu_relax_impl
+endif
