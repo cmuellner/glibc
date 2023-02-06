@@ -242,6 +242,7 @@ __rtld_lock_define_initialized_recursive (, _dl_load_tls_lock)
 int _dl_clktck;
 
 void
+inhibit_loop_to_libcall
 _dl_aux_init (ElfW(auxv_t) *av)
 {
 #ifdef NEED_DL_SYSINFO

@@ -231,6 +231,7 @@ STATIC int LIBC_START_MAIN (int (*main) (int, char **, char **
    locate constructors and destructors.  For statically linked
    executables, the relevant symbols are access directly.  */
 STATIC int
+inhibit_loop_to_libcall
 LIBC_START_MAIN (int (*main) (int, char **, char ** MAIN_AUXVEC_DECL),
 		 int argc, char **argv,
 #ifdef LIBC_START_MAIN_AUXVEC_ARG
