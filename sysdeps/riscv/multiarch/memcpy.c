@@ -31,7 +31,16 @@
 extern __typeof (__redirect_memcpy) __libc_memcpy;
 extern __typeof (__redirect_memcpy) __memcpy_generic attribute_hidden;
 
+#if __riscv_xlen == 64
+extern __typeof (__redirect_memcpy) __memcpy_rv64_unaligned attribute_hidden;
+
+libc_ifunc (__libc_memcpy,
+	    (IS_RV64() && HAVE_FAST_UNALIGNED()
+	    ? __memcpy_rv64_unaligned
+	    : __memcpy_generic));
+#else
 libc_ifunc (__libc_memcpy, __memcpy_generic);
+#endif
 
 # undef memcpy
 strong_alias (__libc_memcpy, memcpy);

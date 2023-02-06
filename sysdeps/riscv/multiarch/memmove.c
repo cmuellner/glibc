@@ -31,7 +31,16 @@
 extern __typeof (__redirect_memmove) __libc_memmove;
 extern __typeof (__redirect_memmove) __memmove_generic attribute_hidden;
 
+#if __riscv_xlen == 64
+extern __typeof (__redirect_memmove) __memmove_rv64_unaligned attribute_hidden;
+
+libc_ifunc (__libc_memmove,
+	    (IS_RV64() && HAVE_FAST_UNALIGNED()
+	    ? __memmove_rv64_unaligned
+	    : __memmove_generic));
+#else
 libc_ifunc (__libc_memmove, __memmove_generic);
+#endif
 
 # undef memmove
 strong_alias (__libc_memmove, memmove);
