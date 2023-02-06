@@ -9,5 +9,7 @@ sysdep_routines += \
 	memset_rv64_unaligned_cboz64 \
 	\
 	strlen_generic \
-	strlen_zbb
+	strlen_zbb \
+	\
+	strcmp_generic
 endif
