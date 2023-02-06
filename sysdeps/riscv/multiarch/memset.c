@@ -31,7 +31,19 @@
 extern __typeof (__redirect_memset) __libc_memset;
 extern __typeof (__redirect_memset) __memset_generic attribute_hidden;
 
+#if __riscv_xlen == 64
+extern __typeof (__redirect_memset) __memset_rv64_unaligned_cboz64 attribute_hidden;
+extern __typeof (__redirect_memset) __memset_rv64_unaligned attribute_hidden;
+
+libc_ifunc (__libc_memset,
+	    (IS_RV64() && HAVE_FAST_UNALIGNED() && HAVE_RV(zicboz) && HAVE_CBOZ_BLOCKSIZE(64)
+	    ? __memset_rv64_unaligned_cboz64
+	    : (IS_RV64() && HAVE_FAST_UNALIGNED()
+	      ? __memset_rv64_unaligned
+	      : __memset_generic)));
+#else
 libc_ifunc (__libc_memset, __memset_generic);
+#endif
 
 # undef memset
 strong_alias (__libc_memset, memset);
