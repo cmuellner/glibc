@@ -30,8 +30,15 @@
 
 extern __typeof (__redirect_strcmp) __libc_strcmp;
 extern __typeof (__redirect_strcmp) __strcmp_generic attribute_hidden;
+extern __typeof (__redirect_strcmp) __strcmp_zbb attribute_hidden;
+extern __typeof (__redirect_strcmp) __strcmp_zbb_unaligned attribute_hidden;
 
-libc_ifunc (__libc_strcmp, __strcmp_generic);
+libc_ifunc (__libc_strcmp,
+	    HAVE_RV(zbb) && HAVE_FAST_UNALIGNED()
+	    ? __strcmp_zbb_unaligned
+	    : HAVE_RV(zbb)
+	      ? __strcmp_zbb
+	      : __strcmp_generic);
 
 # undef strcmp
 strong_alias (__libc_strcmp, strcmp);

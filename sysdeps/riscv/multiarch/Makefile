@@ -11,5 +11,7 @@ sysdep_routines += \
 	strlen_generic \
 	strlen_zbb \
 	\
-	strcmp_generic
+	strcmp_generic \
+	strcmp_zbb \
+	strcmp_zbb_unaligned
 endif
