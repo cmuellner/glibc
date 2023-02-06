@@ -1,4 +1,4 @@
-/* Enumerate available IFUNC implementations of a function.  RISC-V version.
+/* Multiple versions of memset. RISC-V version.
    Copyright (C) 2022 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
@@ -16,27 +16,25 @@
    License along with the GNU C Library; if not, see
    <https://www.gnu.org/licenses/>.  */
 
-#include <assert.h>
-#include <string.h>
-#include <wchar.h>
-#include <ldsodefs.h>
-#include <ifunc-impl-list.h>
-#include <init-arch.h>
-#include <stdio.h>
+/* Define multiple versions only for the definition in libc.  */
 
-/* Maximum number of IFUNC implementations.  */
-#define MAX_IFUNC	7
+#if IS_IN (libc)
+/* Redefine memset so that the compiler won't complain about the type
+   mismatch with the IFUNC selector in strong_alias, below.  */
+# undef memset
+# define memset __redirect_memset
+# include <string.h>
+# include <ldsodefs.h>
+# include <sys/auxv.h>
+# include <init-arch.h>
 
-size_t
-__libc_ifunc_impl_list (const char *name, struct libc_ifunc_impl *array,
-			size_t max)
-{
-  assert (max >= MAX_IFUNC);
+extern __typeof (__redirect_memset) __libc_memset;
+extern __typeof (__redirect_memset) __memset_generic attribute_hidden;
 
-  size_t i = 0;
+libc_ifunc (__libc_memset, __memset_generic);
 
-  IFUNC_IMPL (i, name, memset,
-	      IFUNC_IMPL_ADD (array, i, memset, 1, __memset_generic))
-
-  return i;
-}
+# undef memset
+strong_alias (__libc_memset, memset);
+#else
+# include <string/memset.c>
+#endif

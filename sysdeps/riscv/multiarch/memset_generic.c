@@ -1,5 +1,6 @@
-/* Enumerate available IFUNC implementations of a function.  RISC-V version.
+/* Memset for RISC-V, default version for internal use.
    Copyright (C) 2022 Free Software Foundation, Inc.
+
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -13,30 +14,19 @@
    Lesser General Public License for more details.
 
    You should have received a copy of the GNU Lesser General Public
-   License along with the GNU C Library; if not, see
+   License along with the GNU C Library.  If not, see
    <https://www.gnu.org/licenses/>.  */
 
-#include <assert.h>
 #include <string.h>
-#include <wchar.h>
-#include <ldsodefs.h>
-#include <ifunc-impl-list.h>
-#include <init-arch.h>
-#include <stdio.h>
 
-/* Maximum number of IFUNC implementations.  */
-#define MAX_IFUNC	7
+#define MEMSET __memset_generic
 
-size_t
-__libc_ifunc_impl_list (const char *name, struct libc_ifunc_impl *array,
-			size_t max)
-{
-  assert (max >= MAX_IFUNC);
+#ifdef SHARED
+# undef libc_hidden_builtin_def
+# define libc_hidden_builtin_def(name) \
+  __hidden_ver1(__memset_generic, __GI_memset, __memset_generic);
+#endif
 
-  size_t i = 0;
+extern void *__memset_generic(void *s, int c, size_t n);
 
-  IFUNC_IMPL (i, name, memset,
-	      IFUNC_IMPL_ADD (array, i, memset, 1, __memset_generic))
-
-  return i;
-}
+#include <string/memset.c>
