@@ -6,5 +6,7 @@ sysdep_routines += \
 	\
 	memset_generic \
 	memset_rv64_unaligned \
-	memset_rv64_unaligned_cboz64
+	memset_rv64_unaligned_cboz64 \
+	\
+	strlen_generic
 endif
