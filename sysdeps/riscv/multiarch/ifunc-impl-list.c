@@ -35,6 +35,12 @@ __libc_ifunc_impl_list (const char *name, struct libc_ifunc_impl *array,
 
   size_t i = 0;
 
+  IFUNC_IMPL (i, name, memcpy,
+	      IFUNC_IMPL_ADD (array, i, memcpy, 1, __memcpy_generic))
+
+  IFUNC_IMPL (i, name, memmove,
+	      IFUNC_IMPL_ADD (array, i, memmove, 1, __memmove_generic))
+
   IFUNC_IMPL (i, name, memset,
 #if __riscv_xlen == 64
 	      IFUNC_IMPL_ADD (array, i, memset, 1, __memset_rv64_unaligned_cboz64)
