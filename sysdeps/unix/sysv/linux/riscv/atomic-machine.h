@@ -178,4 +178,7 @@
 # error "ISAs that do not subsume the A extension are not supported"
 #endif /* !__riscv_atomic */
 
+extern void __cpu_relax (void);
+#define atomic_spin_nop() __cpu_relax()
+
 #endif /* bits/atomic.h */
