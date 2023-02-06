@@ -14,5 +14,6 @@ sysdep_routines += \
 	strcmp_generic \
 	strcmp_zbb \
 	strcmp_zbb_unaligned \
-	strncmp_generic
+	strncmp_generic \
+	strncmp_zbb
 endif

@@ -30,8 +30,12 @@
 
 extern __typeof (__redirect_strncmp) __libc_strncmp;
 extern __typeof (__redirect_strncmp) __strncmp_generic attribute_hidden;
+extern __typeof (__redirect_strncmp) __strncmp_zbb attribute_hidden;
 
-libc_ifunc (__libc_strncmp, __strncmp_generic);
+libc_ifunc (__libc_strncmp,
+	    HAVE_RV(zbb)
+	    ? __strncmp_zbb
+	    : __strncmp_generic);
 
 # undef strncmp
 strong_alias (__libc_strncmp, strncmp);
