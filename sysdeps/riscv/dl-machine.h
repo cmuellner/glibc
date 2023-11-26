@@ -72,6 +72,10 @@ elf_machine_matches_host (const ElfW(Ehdr) *ehdr)
     return 0;
 #endif
 
+  /* Execution of TSO binaries is not supported at this time.  */
+  if (ehdr->e_flags & EF_RISCV_TSO)
+    return 0;
+
   return 1;
 }
 

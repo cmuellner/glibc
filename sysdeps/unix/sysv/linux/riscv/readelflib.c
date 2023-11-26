@@ -30,10 +30,9 @@ int process_elf64_file (const char *file_name, const char *lib,
      extension, we can still support libraries compiled without that extension
      so we just ignore this flag.
    - EF_RISCV_RVE: glibc (and Linux) don't support RV32E based systems.
-   - EF_RISCV_TSO: The TSO extension isn't supported, as doing so would require
-     some mechanism to ensure that the TSO extension is enabled which doesn't
+   - EF_RISCV_TSO: Accepted with restrictions (see elf_machine_matches_host).
      currently exist.  */
-#define SUPPORTED_ELF_FLAGS (EF_RISCV_FLOAT_ABI | EF_RISCV_RVC)
+#define SUPPORTED_ELF_FLAGS (EF_RISCV_FLOAT_ABI | EF_RISCV_RVC | EF_RISCV_TSO)
 
 /* Returns 0 if everything is ok, != 0 in case of error.  */
 int
