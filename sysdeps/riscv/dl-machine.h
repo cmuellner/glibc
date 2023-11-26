@@ -24,6 +24,7 @@
 #include <entry.h>
 #include <elf/elf.h>
 #include <sys/asm.h>
+#include <sys/prctl.h>
 #include <dl-tls.h>
 #include <dl-irel.h>
 #include <dl-static-tls.h>
@@ -72,9 +73,19 @@ elf_machine_matches_host (const ElfW(Ehdr) *ehdr)
     return 0;
 #endif
 
-  /* Execution of TSO binaries is not supported at this time.  */
+  /* Execution of TSO binaries depends on machine's consistency model.  */
   if (ehdr->e_flags & EF_RISCV_TSO)
-    return 0;
+    {
+      /* Attempt to get current consistency model.  */
+      int ret = prctl(PR_GET_MEMORY_CONSISTENCY_MODEL);
+      if (ret == -1)
+	return 0;
+      /* If we have a mismatch, let's try to switch to TSO.  */
+      if (ret != PR_MEMORY_CONSISTENCY_MODEL_RISCV_TSO &&
+	  prctl(PR_SET_MEMORY_CONSISTENCY_MODEL,
+		PR_MEMORY_CONSISTENCY_MODEL_RISCV_TSO))
+	return 0;
+    }
 
   return 1;
 }
